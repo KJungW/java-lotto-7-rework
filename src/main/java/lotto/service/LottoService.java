@@ -1,9 +1,7 @@
 package lotto.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import lotto.constant.WinningType;
 import lotto.domain.Lotto;
 import lotto.repository.LottoRepository;
@@ -47,20 +45,7 @@ public class LottoService {
     }
 
     private Lotto makeLotto() {
-        Set<Integer> numbers = new HashSet<>();
-        for (int i = 0; i < 6; i++) {
-            addLottoNumber(numbers);
-        }
-        return new Lotto(numbers.stream().toList());
-    }
-
-    private void addLottoNumber(Set<Integer> numbers) {
-        while (true) {
-            int newNumber = RandomNumberGenerator.makeRandomNumber(1, 45);
-            if (!numbers.contains(newNumber)) {
-                numbers.add(newNumber);
-                return;
-            }
-        }
+        List<Integer> numbers = RandomNumberGenerator.makeRandomNumber(1, 45, 6);
+        return new Lotto(numbers);
     }
 }
