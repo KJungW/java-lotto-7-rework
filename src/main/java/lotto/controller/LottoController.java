@@ -23,5 +23,6 @@ public class LottoController {
         lottoService.issueLottos(priceAmount);
         outputService.printIssuedLotto();
         Lotto winningLotto = inputService.inputWinningNumber();
+        int bonusNumber = inputService.inputBonusNumber(winningLotto.getNumbers());
     }
 }

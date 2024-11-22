@@ -42,6 +42,18 @@ public class InputService {
         }
     }
 
+    public int inputBonusNumber(List<Integer> bannedNumbers) {
+        while (true) {
+            try {
+                return tryInputBonusNumber(bannedNumbers);
+            } catch (WrongInputException exception) {
+                outputView.printError(exception.getMessage());
+            } catch (IllegalArgumentException exception) {
+                outputView.printError("잘못된 입력입니다. 다시 입력해주세요!");
+            }
+        }
+    }
+
     private int tryInputPurchaseAmount() {
         String rawInput = inputView.inputPurchaseAmount();
         validateLottoNumberIsNumeric(rawInput);
@@ -57,6 +69,14 @@ public class InputService {
         validateLottoNumberRange(rawInput);
         validateLottoNumberDuplication(rawInput);
         return parseLotto(rawInput);
+    }
+
+    private int tryInputBonusNumber(List<Integer> bannedNumbers) {
+        String rawInput = inputView.inputBonusNumber();
+        validateBonusNumberIsNumeric(rawInput);
+        validateBonusNumberIsRange(rawInput);
+        validateBonusNumberBan(rawInput, bannedNumbers);
+        return Integer.parseInt(rawInput);
     }
 
     private void validateLottoNumberIsNumeric(String input) {
@@ -102,6 +122,31 @@ public class InputService {
             throw new WrongInputException("로또번호는 중복을 허용하지 않습니다.");
         }
     }
+
+    private void validateBonusNumberIsNumeric(String input) {
+        try {
+            Integer.parseInt(input);
+        } catch (NumberFormatException exception) {
+            throw new WrongInputException("보너스 번호는 숫자여야 합니다.");
+        }
+    }
+
+    private void validateBonusNumberIsRange(String input) {
+        int number = Integer.parseInt(input);
+        if (number < 1 || number > 45) {
+            throw new WrongInputException("보너스 번호의 범위는 1~45여야 합니다.");
+        }
+    }
+
+    private void validateBonusNumberBan(String input, List<Integer> bannedNumbers) {
+        int number = Integer.parseInt(input);
+        for (int bannedNumber : bannedNumbers) {
+            if (bannedNumber == number) {
+                throw new WrongInputException("보너스번호는 당첨 번호와의 중복을 허용하지 않습니다.");
+            }
+        }
+    }
+
 
     private Lotto parseLotto(String rawInput) {
         List<String> rawNumbers = List.of(rawInput.split(","));
