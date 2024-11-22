@@ -40,6 +40,12 @@ public class LottoService {
         return winningTypes.stream().filter(type -> !type.equals(WinningType.NONE)).toList();
     }
 
+    public double calculateRateOfReturn(int purchaseAmount, List<WinningType> winningTypes) {
+        long totalPrize = winningTypes.stream().mapToLong(WinningType::getPrize).sum();
+        double rateOfReturn = (totalPrize / (double) purchaseAmount) * 100;
+        return (int) (rateOfReturn * 100) / (double) 100;
+    }
+
     private Lotto makeLotto() {
         Set<Integer> numbers = new HashSet<>();
         for (int i = 0; i < 6; i++) {

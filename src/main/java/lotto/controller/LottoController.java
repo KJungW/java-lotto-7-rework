@@ -27,5 +27,6 @@ public class LottoController {
         Lotto winningLotto = inputService.inputWinningNumber();
         int bonusNumber = inputService.inputBonusNumber(winningLotto.getNumbers());
         List<WinningType> winningTypes = lottoService.calculateWinning(winningLotto, bonusNumber);
+        double rateOfReturn = lottoService.calculateRateOfReturn(priceAmount, winningTypes);
     }
 }
