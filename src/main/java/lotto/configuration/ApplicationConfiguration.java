@@ -3,6 +3,7 @@ package lotto.configuration;
 import lotto.repository.LottoRepository;
 import lotto.service.InputService;
 import lotto.service.LottoService;
+import lotto.service.OutputService;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -18,6 +19,8 @@ public class ApplicationConfiguration {
             = new LottoRepository();
     private final LottoService lottoService
             = new LottoService(lottoRepository);
+    private final OutputService outputService
+            = new OutputService(outputView, lottoService);
 
     public InputService getInputService() {
         return inputService;
@@ -25,5 +28,9 @@ public class ApplicationConfiguration {
 
     public LottoService getLottoService() {
         return lottoService;
+    }
+
+    public OutputService getOutputService() {
+        return outputService;
     }
 }

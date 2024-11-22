@@ -25,6 +25,10 @@ public class LottoService {
         lottoRepository.replaceAll(issuedLottos);
     }
 
+    public List<Lotto> findIssuedLottos() {
+        return lottoRepository.findAll();
+    }
+
     private Lotto makeLotto() {
         Set<Integer> numbers = new HashSet<>();
         for (int i = 0; i < 6; i++) {

@@ -29,4 +29,8 @@ public class Lotto {
     public Lotto copy() {
         return new Lotto(numbers.stream().toList());
     }
+
+    public List<Integer> getNumbers() {
+        return numbers.stream().toList();
+    }
 }
