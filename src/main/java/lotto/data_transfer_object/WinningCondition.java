@@ -14,4 +14,12 @@ public class WinningCondition {
         return this.matchedNumberCount == matchedNumberCount &&
                 this.isBonusNumberMatched == isBonusNumberMatched;
     }
+
+    public int getMatchedNumberCount() {
+        return matchedNumberCount;
+    }
+
+    public boolean isBonusNumberMatched() {
+        return isBonusNumberMatched;
+    }
 }
