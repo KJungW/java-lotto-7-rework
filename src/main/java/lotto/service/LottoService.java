@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lotto.constant.WinningType;
 import lotto.domain.Lotto;
 import lotto.repository.LottoRepository;
 import lotto.utility.RandomNumberGenerator;
@@ -27,6 +28,16 @@ public class LottoService {
 
     public List<Lotto> findIssuedLottos() {
         return lottoRepository.findAll();
+    }
+
+    public List<WinningType> calculateWinning(Lotto winningLotto, int bonusNumber) {
+        List<Lotto> issuedLotto = lottoRepository.findAll();
+        List<WinningType> winningTypes = issuedLotto.stream().map(lotto -> {
+            int matchedNumberCount = lotto.calculateMatchedNumberCount(winningLotto);
+            boolean isBonusNumberMatched = lotto.checkBonusNumberMatching(bonusNumber);
+            return WinningType.findWinningType(matchedNumberCount, isBonusNumberMatched);
+        }).toList();
+        return winningTypes.stream().filter(type -> !type.equals(WinningType.NONE)).toList();
     }
 
     private Lotto makeLotto() {

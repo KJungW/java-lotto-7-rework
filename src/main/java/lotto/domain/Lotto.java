@@ -2,7 +2,9 @@ package lotto.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Lotto {
 
@@ -12,6 +14,16 @@ public class Lotto {
         validateNumberCount(numbers);
         validateNumberRange(numbers);
         this.numbers = sortNumbers(numbers);
+    }
+
+    public int calculateMatchedNumberCount(Lotto winningLotto) {
+        Set<Integer> winningNumbers = new HashSet<>(winningLotto.getNumbers());
+        return numbers.stream()
+                .filter(winningNumbers::contains).toList().size();
+    }
+
+    public boolean checkBonusNumberMatching(int bonusNumber) {
+        return numbers.stream().anyMatch(number -> number == bonusNumber);
     }
 
     public Lotto copy() {

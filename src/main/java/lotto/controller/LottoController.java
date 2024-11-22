@@ -1,6 +1,8 @@
 package lotto.controller;
 
+import java.util.List;
 import lotto.configuration.ApplicationConfiguration;
+import lotto.constant.WinningType;
 import lotto.domain.Lotto;
 import lotto.service.InputService;
 import lotto.service.LottoService;
@@ -24,5 +26,6 @@ public class LottoController {
         outputService.printIssuedLotto();
         Lotto winningLotto = inputService.inputWinningNumber();
         int bonusNumber = inputService.inputBonusNumber(winningLotto.getNumbers());
+        List<WinningType> winningTypes = lottoService.calculateWinning(winningLotto, bonusNumber);
     }
 }
