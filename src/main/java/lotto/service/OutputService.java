@@ -31,7 +31,7 @@ public class OutputService {
             WinningCondition condition = type.getWinningCondition();
             String bonusNumberMatchingState = makeBonusNumberMatchingState(condition.isBonusNumberMatched());
             int typeCount = countWinningType(type, winningTypes);
-            String content = String.format("%d개 일치 %s(%,d원) - %d개",
+            String content = String.format("%d개 일치%s(%,d원) - %d개",
                     condition.getMatchedNumberCount(), bonusNumberMatchingState, type.getPrize(), typeCount);
             outputView.printContent(content);
         }
@@ -40,7 +40,7 @@ public class OutputService {
     public void printRateOfReturn(double rateOfReturn) {
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         String rateText = decimalFormat.format(rateOfReturn);
-        String content = String.format("총 수익률은 %s입니다.", rateText);
+        String content = String.format("총 수익률은 %s입니다.", rateText + "%");
         outputView.printContent(content);
     }
 
@@ -64,9 +64,9 @@ public class OutputService {
 
     private String makeBonusNumberMatchingState(boolean isMatching) {
         if (isMatching) {
-            return "보너스 볼 일치 ";
+            return ", 보너스 볼 일치 ";
         }
-        return "";
+        return " ";
     }
 
     private int countWinningType(WinningType standardType, List<WinningType> targetTypes) {
