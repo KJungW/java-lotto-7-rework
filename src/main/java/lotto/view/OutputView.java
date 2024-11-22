@@ -11,7 +11,7 @@ public class OutputView {
     }
 
     public void printError(String message) {
-        String content = "[Error]" + message;
+        String content = "[ERROR]" + message;
         System.out.println(content);
     }
 }
