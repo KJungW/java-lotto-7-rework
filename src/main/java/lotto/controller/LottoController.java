@@ -1,6 +1,7 @@
 package lotto.controller;
 
 import lotto.configuration.ApplicationConfiguration;
+import lotto.domain.Lotto;
 import lotto.service.InputService;
 import lotto.service.LottoService;
 import lotto.service.OutputService;
@@ -21,5 +22,6 @@ public class LottoController {
         int priceAmount = inputService.inputPurchaseAmount();
         lottoService.issueLottos(priceAmount);
         outputService.printIssuedLotto();
+        Lotto winningLotto = inputService.inputWinningNumber();
     }
 }
