@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lotto.exception.WrongInputException;
 
 public class Lotto {
 
@@ -13,6 +14,7 @@ public class Lotto {
     public Lotto(List<Integer> numbers) {
         validateNumberCount(numbers);
         validateNumberRange(numbers);
+        validateNumberDuplicate(numbers);
         this.numbers = sortNumbers(numbers);
     }
 
@@ -45,6 +47,13 @@ public class Lotto {
                 .anyMatch(number -> number >= 1 && number <= 45);
         if (!isInRange) {
             throw new IllegalArgumentException("로또번호는 1~45 사이여야 합니다.");
+        }
+    }
+
+    private void validateNumberDuplicate(List<Integer> numbers) {
+        Set<Integer> nonDuplicatedNumbers = new HashSet<>(numbers);
+        if (nonDuplicatedNumbers.size() != numbers.size()) {
+            throw new WrongInputException("로또번호는 중복을 허용하지 않습니다.");
         }
     }
 
