@@ -9,6 +9,7 @@ import lotto.constant.LottoSetting;
 import lotto.constant.exception_message.InputExceptionMessage;
 import lotto.domain.Lotto;
 import lotto.exception.WrongInputException;
+import lotto.utility.InputPreprocessor;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -60,6 +61,7 @@ public class InputService {
 
     private int tryInputPurchaseAmount() {
         String rawInput = inputView.inputPurchaseAmount();
+        rawInput = InputPreprocessor.removeSpace(rawInput);
         validateLottoNumberIsNumeric(rawInput);
         int purchaseAmount = Integer.parseInt(rawInput);
         validatePurchaseAmountUnit(purchaseAmount);
@@ -68,6 +70,7 @@ public class InputService {
 
     private Lotto tryInputWinningNumber() {
         String rawInput = inputView.inputWinningNumber();
+        rawInput = InputPreprocessor.removeSpace(rawInput);
         validateLottoNumberSize(rawInput);
         validateLottoNumbersAreNumeric(rawInput);
         validateLottoNumberRange(rawInput);
@@ -77,6 +80,7 @@ public class InputService {
 
     private int tryInputBonusNumber(List<Integer> bannedNumbers) {
         String rawInput = inputView.inputBonusNumber();
+        rawInput = InputPreprocessor.removeSpace(rawInput);
         validateBonusNumberIsNumeric(rawInput);
         validateBonusNumberIsRange(rawInput);
         validateBonusNumberBan(rawInput, bannedNumbers);
