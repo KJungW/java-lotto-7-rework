@@ -46,7 +46,7 @@ public class Lotto {
 
     private void validateNumberRange(List<Integer> numbers) {
         boolean isInRange = numbers.stream()
-                .anyMatch(number -> number >= LottoSetting.MINIMUM_NUMBER && number <= LottoSetting.MAXIMUM_NUMBER);
+                .allMatch(number -> number >= LottoSetting.MINIMUM_NUMBER && number <= LottoSetting.MAXIMUM_NUMBER);
         if (!isInRange) {
             throw new IllegalArgumentException(DomainExceptionMessage.LOTTO_NUMBER_RANGE_IS_WRONG.getMessage());
         }
