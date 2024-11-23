@@ -4,9 +4,9 @@ import java.util.List;
 import lotto.configuration.ApplicationConfiguration;
 import lotto.constant.WinningType;
 import lotto.domain.Lotto;
-import lotto.service.InputService;
 import lotto.service.LottoService;
 import lotto.service.OutputService;
+import lotto.service.input.InputService;
 
 public class LottoController {
 
