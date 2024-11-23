@@ -15,10 +15,10 @@ public class LottoService {
         this.lottoRepository = lottoRepository;
     }
 
-    public void issueLottos(int priceAmount) {
-        int issuedLottoCount = priceAmount / 1000;
+    public void issueLottos(int purchaseAmount) {
+        int issueCount = purchaseAmount / 1000;
         List<Lotto> issuedLottos = new ArrayList<>();
-        for (int i = 0; i < issuedLottoCount; i++) {
+        for (int i = 0; i < issueCount; i++) {
             issuedLottos.add(makeLotto());
         }
         lottoRepository.replaceAll(issuedLottos);
