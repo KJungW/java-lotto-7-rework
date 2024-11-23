@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lotto.constant.LottoSetting;
+import lotto.constant.exception_message.DomainExceptionMessage;
 import lotto.exception.WrongInputException;
 
 public class Lotto {
@@ -37,23 +39,23 @@ public class Lotto {
     }
 
     private void validateNumberCount(List<Integer> numbers) {
-        if (numbers.size() != 6) {
-            throw new IllegalArgumentException("로또번호는 6개의 숫자여야 합니다.");
+        if (numbers.size() != LottoSetting.NUMBER_COUNT) {
+            throw new IllegalArgumentException(DomainExceptionMessage.LOTTO_NUMBER_COUNT_IS_WRONG.getMessage());
         }
     }
 
     private void validateNumberRange(List<Integer> numbers) {
         boolean isInRange = numbers.stream()
-                .anyMatch(number -> number >= 1 && number <= 45);
+                .anyMatch(number -> number >= LottoSetting.MINIMUM_NUMBER && number <= LottoSetting.MAXIMUM_NUMBER);
         if (!isInRange) {
-            throw new IllegalArgumentException("로또번호는 1~45 사이여야 합니다.");
+            throw new IllegalArgumentException(DomainExceptionMessage.LOTTO_NUMBER_RANGE_IS_WRONG.getMessage());
         }
     }
 
     private void validateNumberDuplicate(List<Integer> numbers) {
         Set<Integer> nonDuplicatedNumbers = new HashSet<>(numbers);
         if (nonDuplicatedNumbers.size() != numbers.size()) {
-            throw new WrongInputException("로또번호는 중복을 허용하지 않습니다.");
+            throw new WrongInputException(DomainExceptionMessage.DUPLICATED_LOTTO_NUMBER_IS_NOT_ALLOWED.getMessage());
         }
     }
 

@@ -3,6 +3,10 @@ package lotto.service;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lotto.constant.DefaultValue;
+import lotto.constant.InputSeparator;
+import lotto.constant.LottoSetting;
+import lotto.constant.exception_message.InputExceptionMessage;
 import lotto.domain.Lotto;
 import lotto.exception.WrongInputException;
 import lotto.view.InputView;
@@ -25,7 +29,7 @@ public class InputService {
             } catch (WrongInputException exception) {
                 outputView.printError(exception.getMessage());
             } catch (IllegalArgumentException exception) {
-                outputView.printError("잘못된 입력입니다. 다시 입력해주세요!");
+                outputView.printError(InputExceptionMessage.UNEXPECTED_INPUT_EXCEPTION_MESSAGE.getMessage());
             }
         }
     }
@@ -37,7 +41,7 @@ public class InputService {
             } catch (WrongInputException exception) {
                 outputView.printError(exception.getMessage());
             } catch (IllegalArgumentException exception) {
-                outputView.printError("잘못된 입력입니다. 다시 입력해주세요!");
+                outputView.printError(InputExceptionMessage.UNEXPECTED_INPUT_EXCEPTION_MESSAGE.getMessage());
             }
         }
     }
@@ -49,7 +53,7 @@ public class InputService {
             } catch (WrongInputException exception) {
                 outputView.printError(exception.getMessage());
             } catch (IllegalArgumentException exception) {
-                outputView.printError("잘못된 입력입니다. 다시 입력해주세요!");
+                outputView.printError(InputExceptionMessage.UNEXPECTED_INPUT_EXCEPTION_MESSAGE.getMessage());
             }
         }
     }
@@ -83,43 +87,43 @@ public class InputService {
         try {
             Integer.parseInt(input);
         } catch (NumberFormatException exception) {
-            throw new WrongInputException("로또 번호는 1부터 45 사이의 숫자여야 합니다.");
+            throw new WrongInputException(InputExceptionMessage.LOTTO_NUMBER_RANGE_IS_WRONG.getMessage());
         }
     }
 
     private void validatePurchaseAmountUnit(int purchaseAmount) {
-        if (purchaseAmount % 1000 != 0) {
-            throw new WrongInputException("로또 구매 금액은 1000단위여야합니다.");
+        if (purchaseAmount % LottoSetting.PRICE != DefaultValue.ZERO) {
+            throw new WrongInputException(InputExceptionMessage.LOTTO_PURCHASE_AMOUNT_IS_WRONG.getMessage());
         }
     }
 
     private void validateLottoNumberSize(String rawInput) {
-        List<String> rawNumbers = List.of(rawInput.split(","));
-        if (rawNumbers.size() != 6) {
-            throw new WrongInputException("로또번호는 6개의 숫자여야 합니다.");
+        List<String> rawNumbers = List.of(rawInput.split(InputSeparator.COMMA.getContent()));
+        if (rawNumbers.size() != LottoSetting.NUMBER_COUNT) {
+            throw new WrongInputException(InputExceptionMessage.LOTTO_NUMBER_COUNT_IS_WRONG.getMessage());
         }
     }
 
     private void validateLottoNumbersAreNumeric(String rawInput) {
-        List<String> rawNumbers = List.of(rawInput.split(","));
+        List<String> rawNumbers = List.of(rawInput.split(InputSeparator.COMMA.getContent()));
         rawNumbers.forEach(this::validateLottoNumberIsNumeric);
     }
 
     private void validateLottoNumberRange(String rawInput) {
-        List<String> rawNumbers = List.of(rawInput.split(","));
+        List<String> rawNumbers = List.of(rawInput.split(InputSeparator.COMMA.getContent()));
         for (String rawNumber : rawNumbers) {
             int number = Integer.parseInt(rawNumber);
-            if (number < 1 || number > 45) {
-                throw new WrongInputException("로또번호의 범위는 1부터 45여야 합니다.");
+            if (number < LottoSetting.MINIMUM_NUMBER || number > LottoSetting.MAXIMUM_NUMBER) {
+                throw new WrongInputException(InputExceptionMessage.LOTTO_NUMBER_RANGE_IS_WRONG.getMessage());
             }
         }
     }
 
     private void validateLottoNumberDuplication(String rawInput) {
-        List<String> rawNumbers = List.of(rawInput.split(","));
+        List<String> rawNumbers = List.of(rawInput.split(InputSeparator.COMMA.getContent()));
         Set<Integer> numbers = rawNumbers.stream().map(Integer::parseInt).collect(Collectors.toSet());
         if (numbers.size() != rawNumbers.size()) {
-            throw new WrongInputException("로또번호는 중복을 허용하지 않습니다.");
+            throw new WrongInputException(InputExceptionMessage.DUPLICATED_LOTTO_NUMBER_IS_NOT_ALLOWED.getMessage());
         }
     }
 
@@ -127,14 +131,14 @@ public class InputService {
         try {
             Integer.parseInt(input);
         } catch (NumberFormatException exception) {
-            throw new WrongInputException("보너스 번호는 숫자여야 합니다.");
+            throw new WrongInputException(InputExceptionMessage.BONUS_NUMBER_IS_NOT_NUMERIC.getMessage());
         }
     }
 
     private void validateBonusNumberIsRange(String input) {
         int number = Integer.parseInt(input);
-        if (number < 1 || number > 45) {
-            throw new WrongInputException("보너스 번호의 범위는 1~45여야 합니다.");
+        if (number < LottoSetting.MINIMUM_NUMBER || number > LottoSetting.MAXIMUM_NUMBER) {
+            throw new WrongInputException(InputExceptionMessage.BONUS_NUMBER_RANGE_IS_NOT_ALLOWED.getMessage());
         }
     }
 
@@ -142,14 +146,15 @@ public class InputService {
         int number = Integer.parseInt(input);
         for (int bannedNumber : bannedNumbers) {
             if (bannedNumber == number) {
-                throw new WrongInputException("보너스번호는 당첨 번호와의 중복을 허용하지 않습니다.");
+                throw new WrongInputException(
+                        InputExceptionMessage.DUPLICATED_BONUS_NUMBER_IS_NOT_ALLOWED.getMessage());
             }
         }
     }
 
 
     private Lotto parseLotto(String rawInput) {
-        List<String> rawNumbers = List.of(rawInput.split(","));
+        List<String> rawNumbers = List.of(rawInput.split(InputSeparator.COMMA.getContent()));
         List<Integer> numbers = rawNumbers.stream().map(Integer::parseInt).toList();
         return new Lotto(numbers);
     }

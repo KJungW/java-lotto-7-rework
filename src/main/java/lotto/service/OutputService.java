@@ -3,6 +3,7 @@ package lotto.service;
 import java.text.DecimalFormat;
 import java.util.List;
 import lotto.constant.WinningType;
+import lotto.constant.input_output_message.OutputMessage;
 import lotto.data_transfer_object.WinningCondition;
 import lotto.domain.Lotto;
 import lotto.view.OutputView;
@@ -19,28 +20,28 @@ public class OutputService {
 
     public void printIssuedLotto() {
         List<Lotto> issuedLottos = lottoService.findIssuedLottos();
-        outputView.printContent(issuedLottos.size() + "개를 구매했습니다.");
+        String content = String.format(OutputMessage.ISSUED_LOTTO_COUNT.getMessage(), issuedLottos.size());
+        outputView.printContent(content);
         issuedLottos.forEach(this::printLotto);
     }
 
     public void printWinningResult(List<WinningType> winningTypes) {
-        outputView.printContent("당첨 통계");
-        outputView.printContent("---");
+        outputView.printContent(OutputMessage.WINNING_RESULT_INTRODUCTION_START.getMessage());
         List<WinningType> allWinningTypes = List.of(WinningType.values()).reversed();
         for (WinningType type : allWinningTypes) {
             WinningCondition condition = type.getWinningCondition();
             String bonusNumberMatchingState = makeBonusNumberMatchingState(condition.isBonusNumberMatched());
             int typeCount = countWinningType(type, winningTypes);
-            String content = String.format("%d개 일치%s(%,d원) - %d개",
+            String content = String.format(OutputMessage.WINNING_RESULT_CONTENT.getMessage(),
                     condition.getMatchedNumberCount(), bonusNumberMatchingState, type.getPrize(), typeCount);
             outputView.printContent(content);
         }
     }
 
     public void printRateOfReturn(double rateOfReturn) {
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        String rateText = decimalFormat.format(rateOfReturn);
-        String content = String.format("총 수익률은 %s입니다.", rateText + "%");
+        DecimalFormat decimalFormat = new DecimalFormat(OutputMessage.RATE_OF_RETURN_FORMAT.getMessage());
+        String rateText = decimalFormat.format(rateOfReturn) + OutputMessage.PERCENT_SIGN.getMessage();
+        String content = String.format(OutputMessage.RATE_OF_RETURN_CONTENT.getMessage(), rateText);
         outputView.printContent(content);
     }
 
@@ -51,22 +52,16 @@ public class OutputService {
     }
 
     private String makeNumberContent(List<Integer> numbers) {
-        StringBuilder content = new StringBuilder();
-        content.append("[");
-        for (int i = 0; i < numbers.size(); i++) {
-            content.append(numbers.get(i));
-            if (i != numbers.size() - 1) {
-                content.append(", ");
-            }
-        }
-        return content.append("]").toString();
+        List<String> numberTexts = numbers.stream().map(String::valueOf).toList();
+        String content = String.join(OutputMessage.LOTTO_NUMBER_SEPARATOR.getMessage(), numberTexts);
+        return String.format(OutputMessage.SQUARE_BRACKETS.getMessage(), content);
     }
 
     private String makeBonusNumberMatchingState(boolean isMatching) {
         if (isMatching) {
-            return ", 보너스 볼 일치 ";
+            return OutputMessage.MATCHED_BONUS_NUMBER_CONTENT.getMessage();
         }
-        return " ";
+        return OutputMessage.SPACE.getMessage();
     }
 
     private int countWinningType(WinningType standardType, List<WinningType> targetTypes) {
