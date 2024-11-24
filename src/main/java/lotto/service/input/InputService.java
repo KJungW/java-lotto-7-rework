@@ -62,7 +62,7 @@ public class InputService {
     private int tryInputPurchaseAmount() {
         String rawInput = inputView.inputPurchaseAmount();
         rawInput = InputPreprocessor.removeSpace(rawInput);
-        validationService.validateLottoNumberIsNumeric(rawInput);
+        validationService.validatePurchasePriceIsNumeric(rawInput);
         int purchaseAmount = Integer.parseInt(rawInput);
         validationService.validatePurchaseAmountUnit(purchaseAmount);
         return purchaseAmount;

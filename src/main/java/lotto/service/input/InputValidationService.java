@@ -11,6 +11,14 @@ import lotto.exception.WrongInputException;
 
 public class InputValidationService {
 
+    public void validatePurchasePriceIsNumeric(String input) {
+        try {
+            Integer.parseInt(input);
+        } catch (NumberFormatException exception) {
+            throw new WrongInputException(InputExceptionMessage.LOTTO_PURCHASE_AMOUNT_IS_NOT_NUMERIC.getMessage());
+        }
+    }
+
     public void validatePurchaseAmountUnit(int purchaseAmount) {
         if (purchaseAmount % LottoSetting.PRICE != DefaultValue.ZERO) {
             throw new WrongInputException(InputExceptionMessage.LOTTO_PURCHASE_AMOUNT_IS_WRONG.getMessage());
