@@ -20,6 +20,45 @@ class InputValidationServiceTest {
         inputValidationService = new InputValidationService();
     }
 
+    @DisplayName("로또 구매금액 입력값이 숫자형인지 검증 - 통과")
+    @Test
+    void 로또_구매금액_입력값이_숫자형인지_검증_통과() {
+        String input = "5000";
+
+        assertThatCode(() -> inputValidationService.validatePurchasePriceIsNumeric(input))
+                .doesNotThrowAnyException();
+    }
+
+    @DisplayName("로또 구매금액 입력값이 숫자형인지 검증 - 실패")
+    @Test
+    void 로또_구매금액_입력값이_숫자형인지_검증_실패() {
+        String input = "number";
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> inputValidationService.validatePurchasePriceIsNumeric(input))
+                .withMessage(InputExceptionMessage.LOTTO_PURCHASE_AMOUNT_IS_NOT_NUMERIC.getMessage());
+    }
+
+    @DisplayName("로또 구매금액이 양수인지 검증 - 통과")
+    @Test
+    void 로또_구매금액이_양수인지_검증_통과() {
+        int input = 5000;
+
+        assertThatCode(() -> inputValidationService.validatePurchasePriceIsPositive(input))
+                .doesNotThrowAnyException();
+    }
+
+    @DisplayName("로또 구매금액이 양수인지 검증 - 실패")
+    @Test
+    void 로또_구매금액이_양수인지_검증_실패() {
+        int input = -1000;
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> inputValidationService.validatePurchasePriceIsPositive(input))
+                .withMessage(InputExceptionMessage.LOTTO_PURCHASE_AMOUNT_IS_NOT_POSITIVE.getMessage());
+    }
+
+
     @DisplayName("로또 구매금액 단위 검증 - 통과")
     @Test
     void 로또_구매금액_단위_검증_통과() {
