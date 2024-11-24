@@ -11,6 +11,12 @@ import lotto.exception.WrongInputException;
 
 public class InputValidationService {
 
+    public void validatePurchaseAmountUnit(int purchaseAmount) {
+        if (purchaseAmount % LottoSetting.PRICE != DefaultValue.ZERO) {
+            throw new WrongInputException(InputExceptionMessage.LOTTO_PURCHASE_AMOUNT_IS_WRONG.getMessage());
+        }
+    }
+
     public void validateLottoNumberIsNumeric(String input) {
         try {
             Integer.parseInt(input);
@@ -19,22 +25,16 @@ public class InputValidationService {
         }
     }
 
-    public void validatePurchaseAmountUnit(int purchaseAmount) {
-        if (purchaseAmount % LottoSetting.PRICE != DefaultValue.ZERO) {
-            throw new WrongInputException(InputExceptionMessage.LOTTO_PURCHASE_AMOUNT_IS_WRONG.getMessage());
-        }
+    public void validateLottoNumbersAreNumeric(String rawInput) {
+        List<String> rawNumbers = List.of(rawInput.split(InputSeparator.COMMA.getContent()));
+        rawNumbers.forEach(this::validateLottoNumberIsNumeric);
     }
 
-    public void validateLottoNumberSize(String rawInput) {
+    public void validateLottoNumberCount(String rawInput) {
         List<String> rawNumbers = List.of(rawInput.split(InputSeparator.COMMA.getContent()));
         if (rawNumbers.size() != LottoSetting.NUMBER_COUNT) {
             throw new WrongInputException(InputExceptionMessage.LOTTO_NUMBER_COUNT_IS_WRONG.getMessage());
         }
-    }
-
-    public void validateLottoNumbersAreNumeric(String rawInput) {
-        List<String> rawNumbers = List.of(rawInput.split(InputSeparator.COMMA.getContent()));
-        rawNumbers.forEach(this::validateLottoNumberIsNumeric);
     }
 
     public void validateLottoNumberRange(String rawInput) {

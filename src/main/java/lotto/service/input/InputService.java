@@ -71,7 +71,7 @@ public class InputService {
     private Lotto tryInputWinningNumber() {
         String rawInput = inputView.inputWinningNumber();
         rawInput = InputPreprocessor.removeSpace(rawInput);
-        validationService.validateLottoNumberSize(rawInput);
+        validationService.validateLottoNumberCount(rawInput);
         validationService.validateLottoNumbersAreNumeric(rawInput);
         validationService.validateLottoNumberRange(rawInput);
         validationService.validateLottoNumberDuplication(rawInput);
