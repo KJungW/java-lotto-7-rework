@@ -19,6 +19,12 @@ public class InputValidationService {
         }
     }
 
+    public void validatePurchasePriceIsPositive(int input) {
+        if (input <= 0) {
+            throw new WrongInputException(InputExceptionMessage.LOTTO_PURCHASE_AMOUNT_IS_NOT_POSITIVE.getMessage());
+        }
+    }
+
     public void validatePurchaseAmountUnit(int purchaseAmount) {
         if (purchaseAmount % LottoSetting.PRICE != DefaultValue.ZERO) {
             throw new WrongInputException(InputExceptionMessage.LOTTO_PURCHASE_AMOUNT_IS_WRONG.getMessage());

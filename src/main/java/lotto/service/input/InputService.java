@@ -64,6 +64,7 @@ public class InputService {
         rawInput = InputPreprocessor.removeSpace(rawInput);
         validationService.validatePurchasePriceIsNumeric(rawInput);
         int purchaseAmount = Integer.parseInt(rawInput);
+        validationService.validatePurchasePriceIsPositive(purchaseAmount);
         validationService.validatePurchaseAmountUnit(purchaseAmount);
         return purchaseAmount;
     }
